@@ -24,6 +24,7 @@ use App\Http\Livewire\Admin\UserController;
 use App\Http\Livewire\Admin\PostController;
 use App\Http\Livewire\Admin\TeachingController;
 use App\Http\Livewire\Admin\EmailController;
+use App\Http\Livewire\Admin\ThesisController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -159,4 +160,13 @@ Route::middleware(['auth:web', config('jetstream.auth_session'), 'verified'])->g
         // return Excel::download(new UserExport, 'users.xlsx');
         return $userExport;
     });
+
+    Route::middleware('can:participantlists.show')->prefix('admin')->name('admin.')
+        ->get('verpdfs', ThesisController::class)->name('verpdfs');
+
+    Route::post('/thesis/register', [ThesisController::class, 'store'])->name('thesis_register');
+    Route::get('/thesis/file/{id}', [ThesisController::class, 'urlfile'])->name('thesis_file');
+    Route::post('/thesis/update', [ThesisController::class, 'update'])->name('thesis_update');
+    Route::get('/thesis/delete/{id}', [ThesisController::class, 'destroy'])->name('thesis_delete');
+
 });

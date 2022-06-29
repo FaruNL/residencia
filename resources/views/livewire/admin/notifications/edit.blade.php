@@ -20,16 +20,7 @@
                 <x-jet-input-error for="arr.description"/>
             </div>
 
-            <div class="mt-4 sm:flex-1">
-                <x-jet-label for="rol" value="Destinatario*"/>
-                <x-input.select wire:model="arr.role" id="rol" class="mt-1 w-full" name="rol">
-                        <option value="" disabled>Selecciona</option>
-                        <option value="Participante">Participantes</option>
-                        <option value="Instructor">Instructores</option>
-                        <option value="Todos">Todos</option>
-                </x-input.select>
-                <x-jet-input-error for="arr.role"/>
-            </div>
+
 
         </form>
     </x-slot>
@@ -42,8 +33,8 @@
         <x-jet-button class="ml-3" wire:click.prevent="confirmation()" wire:loading.attr="disabled" form="courseForm">
             enviar
         </x-jet-button>
-        @if($confirmingSaveNotificacion)
+        {{-- @if($confirmingSaveNotificacion)
                 @include('livewire.admin.notifications.confirSenNotif')
-        @endif
+        @endif --}}
     </x-slot>
 </x-jet-dialog-modal>
