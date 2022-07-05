@@ -47,6 +47,8 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
+Route::get('subir-pdf', \App\Http\Livewire\FileUpload::class)->name('subir-pdf');
+
 
 
 Route::middleware(['auth:web', config('jetstream.auth_session'), 'verified'])->group(function () {
