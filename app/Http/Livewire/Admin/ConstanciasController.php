@@ -39,7 +39,7 @@ class ConstanciasController extends Component
     {
         return view('livewire.admin.constancias.index', [
             'calificaciones' => $this->consultaBase()
-                ->select(['inscriptions.id', 'users.name', 'users.apellido_paterno', 'users.apellido_materno', DB::raw("concat(users.name,' ',users.apellido_paterno,' ', users.apellido_materno) as nombre"),
+                ->select(['inscriptions.id','users.id as iduser', 'course_details.id as idcurse','users.name', 'users.apellido_paterno', 'users.apellido_materno', DB::raw("concat(users.name,' ',users.apellido_paterno,' ', users.apellido_materno) as nombre"),
                 'courses.nombre as curso', 'groups.nombre as grupo',
                 'inscriptions.calificacion','inscriptions.estatus_participante','inscriptions.asistencias_minimas', 'areas.nombre as area'])
                 ->where('inscriptions.estatus_participante','=','Participante')
@@ -142,7 +142,11 @@ class ConstanciasController extends Component
             ->where('inscriptions.estatus_participante', '=', 'Participante')
             ->where('course_details.period_id', '=', $this->classification['periodo'])
             ->where('course_details.course_id', '=', $this->classification['curso'])
-            ->select(['inscriptions.id',  DB::raw("concat(users.name,' ',users.apellido_paterno,' ', users.apellido_materno) as nombre"),'users.name', 'users.apellido_paterno', 'users.apellido_materno',
+            ->select(['inscriptions.id','users.id as iduser','course_details.id as idcurse',  DB::raw("concat(users.name,' ',users.apellido_paterno,' ', users.apellido_materno) as nombre"),'users.name', 'users.apellido_paterno', 'users.apellido_materno',
                 'courses.nombre as curso', 'groups.nombre as grupo', 'inscriptions.calificacion', 'areas.nombre as area','periods.fecha_inicio as fi', 'periods.fecha_fin as ff','courses.duracion as duracion']);
     }
+
+    // public function consulta($iduser, $idcurse){
+    //     app(\App\Http\Livewire\FileUpload::class)->buscar($iduser, $idcurse);
+    // }
 }

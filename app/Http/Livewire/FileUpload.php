@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Archive;
 
 class FileUpload extends Component
 {
@@ -29,8 +31,16 @@ class FileUpload extends Component
 
     public function savePdf()
     {
+        $id = Auth::user()->id;
         $this->validate();
         $this->pdf->store('constancias');
+        // $this->pdf->hashName();
+        $thesis = Archive::create([
+            'title' => 's',
+           'url' =>"{$this->pdf->hashName()}",
+            'user_id' =>5,
+            'course_detail_id'=> 3
+        ]);
     }
 
     public function seePDF($fileName)

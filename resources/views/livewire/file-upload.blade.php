@@ -16,6 +16,7 @@
                             <p class="mb-2 text-sm text-sky-800"><span class="font-semibold">Subir cédula de inscripción firmada</span></p>
                             @if(isset($pdf))
                                 <span class="mb-2 text-sm text-sky-600">{{ $pdf->getClientOriginalName() }}</span>
+                                {{-- {{dd($pdf->getClientOriginalName())}} --}}
                             @endif
                             <p class="text-xs text-gray-500">PDF <span class="italic">(max 2 MB)</span></p>
                         </div>

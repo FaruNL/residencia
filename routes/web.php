@@ -25,6 +25,7 @@ use App\Http\Livewire\Admin\PostController;
 use App\Http\Livewire\Admin\TeachingController;
 use App\Http\Livewire\Admin\ConstanciaInstructorController;
 use App\Http\Livewire\Admin\EmailController;
+use App\Http\Livewire\Seepdsf;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -48,7 +49,7 @@ Route::get('/', function () {
 });
 
 Route::get('subir-pdf', \App\Http\Livewire\FileUpload::class)->name('subir-pdf');
-
+Route::get('files/{fileName}', [\App\Http\Livewire\FileUpload::class, 'seePDF'])->name('see-pdf');
 
 
 Route::middleware(['auth:web', config('jetstream.auth_session'), 'verified'])->group(function () {
@@ -56,7 +57,7 @@ Route::middleware(['auth:web', config('jetstream.auth_session'), 'verified'])->g
 
     Route::get('/activatePeriod', ActivatePeriodController::class);
 
-    Route::get('files/{fileName}', [\App\Http\Livewire\FileUpload::class, 'seePDF'])->name('see-pdf');
+
 
     Route::middleware('can:user.show')->prefix('admin')->name('admin.')
         ->get('usuarios', UserController::class)->name('usuarios');
@@ -164,5 +165,7 @@ Route::middleware(['auth:web', config('jetstream.auth_session'), 'verified'])->g
     Route::middleware('can:sendemail.show')->prefix('admin')->name('admin.')
         ->get('email', EmailController::class)->name('email');
 
+        Route::middleware('can:sendemail.show')->prefix('admin')->name('admin.')
+        ->get('view', Seepdsf::class)->name('view');
 
 });

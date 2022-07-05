@@ -76,7 +76,7 @@
                                 <div>
                                     <x-jet-label for="grupo_filter" value="Grupo"/>
                                     <x-input.select wire:model="filters.grupo" id="grupo_filter" class="text-sm block mt-1 w-full" name="grupo_filter" required>
-                                        <option value="" disabled>Selecciona modalidad...</option>
+                                        <option value="" disabled>Selecciona grupo...</option>
                                         @foreach(\App\Models\CourseDetail::join('groups','groups.id','=','course_details.group_id')
                                             ->join('periods','periods.id','=', 'course_details.period_id')
                                             ->join('courses','courses.id','=', 'course_details.course_id')
@@ -90,19 +90,6 @@
                                     </x-input.select>
                                 </div>
                             </div>
-
-                            <!-- Calificación -->
-                            <div class="block px-4 py-2 space-y-1">
-                                <div>
-                                    <x-jet-label for="filtro_calificacion" value="Estatus"/>
-                                    <x-input.select wire:model="filters.filtro_calificacion" name="filtro_calificacion" id="filtro_calificacion" class="text-sm block mt-1 w-full" required>
-                                        <option value="" disabled>Selecciona estatus</option>
-                                        <option value='70'>Aprobados</option>
-                                        <option value='69'>No Aprobados</option>
-                                    </x-input.select>
-                                </div>
-                            </div>
-
 
                         </x-slot>
                     </x-dropdown>
@@ -130,9 +117,6 @@
                         <x-table.header class="text-center">Participante</x-table.header>
                         <x-table.header class="text-center">curso</x-table.header>
                         <x-table.header class="text-center">grupo</x-table.header>
-                        <x-table.header class="text-center">Calificación</x-table.header>
-                        <x-table.header class="text-center">Asistencias minimas</x-table.header>
-                        <x-table.header class="text-center">Acción</x-table.header>
                         <x-table.header class="text-center">ver pdf</x-table.header>
                     </x-slot>
 
@@ -143,25 +127,16 @@
                             </x-table.cell>
                             <x-table.cell class="text-center">{{ $g->curso }}</x-table.cell>
                             <x-table.cell class="text-center">{{ $g->grupo }}</x-table.cell>
-                            <x-table.cell class="text-center">{{ $g->calificacion }}</x-table.cell>
-                            <x-table.cell class="text-center"
-                            >@if($g->asistencias_minimas === 1)
-                                <x-badge.basic value="Tiene" color="green" large/>
-                            @elseif($g->asistencias_minimas === 0)
-                                <x-badge.basic value="No tiene" color="red" large/>
-                            @endif
+
+                            <x-table.cell>
+                                {{-- <button onclick="showFile({{ $item->id }})" type="button" class="text-amber-600 hover:text-amber-900">
+                                    <x-icon.pencil alt class="h-6 w-6"/>
+                                </button> --}}
+                                {{-- <button type="button" class="btn btn-info" >Ver Cédula</button> --}}
+                                <a href={{route('see-pdf', $g->url)}} class="text-gray-700 font-bold py-2 px-6">
+                                    ver pdf
+                                </a>
                             </x-table.cell>
-                            <div>
-                                @if($g->calificacion > 69 and $g->asistencias_minimas==1)
-                                    <x-table.cell class="text-center">
-                                        <button wire:click="descargarConstancia({{ $g->id }})" title="Descargar constancia en formato pdf" class="bg-white border border-gray-800 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-                                            Constancia
-                                        </button>
-                                    </x-table.cell>
-                                @else
-                                    <x-table.cell class="text-center  text-red-500">{{'No aprobó'}}</x-table.cell>
-                                @endif
-                            </div>
                         </tr>
                     @empty
                         <tr>
@@ -183,13 +158,7 @@
                 <div>
                     {{ $calificaciones->links()}}
                 </div>
-                <div class="text-right min-h-full">
-                    @if($calificaciones->count() > 1)
-                        <button wire:click="descargarConstanciasZIP()" title="Descargar todas las constancias en un zip" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-                            Zip de constancias
-                        </button>
-                    @endif
-                </div>
+
             </div>
         </div>
     </div>
