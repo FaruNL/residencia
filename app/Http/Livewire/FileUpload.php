@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -29,6 +31,23 @@ class FileUpload extends Component
     {
         $this->validate();
         $this->pdf->store('constancias');
+    }
+
+    public function seePDF($fileName)
+    {
+        $path = storage_path('app/constancias/'.$fileName);
+
+        if (!File::exists($path)) {
+            abort(404);
+        }
+
+        $file = File::get($path);
+        $type = File::mimeType($path);
+
+        $response = Response::make($file);
+        $response->header("Content-Type", $type);
+
+        return $response;
     }
 
     public function render()

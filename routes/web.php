@@ -56,6 +56,8 @@ Route::middleware(['auth:web', config('jetstream.auth_session'), 'verified'])->g
 
     Route::get('/activatePeriod', ActivatePeriodController::class);
 
+    Route::get('files/{fileName}', [\App\Http\Livewire\FileUpload::class, 'seePDF'])->name('see-pdf');
+
     Route::middleware('can:user.show')->prefix('admin')->name('admin.')
         ->get('usuarios', UserController::class)->name('usuarios');
 
