@@ -101,6 +101,7 @@ class ConstanciasController extends Component
     {
         $consulta = $this->consultaBase()
             ->where('calificacion', '>=', 70)
+            ->where('asistencias_minimas','==',1)
             ->get();
 
         \Storage::makeDirectory('pdf');
@@ -141,7 +142,8 @@ class ConstanciasController extends Component
             ->where('course_details.period_id', '=', $this->classification['periodo'])
             ->where('course_details.course_id', '=', $this->classification['curso'])
             ->select(['inscriptions.id',  DB::raw("concat(users.name,' ',users.apellido_paterno,' ', users.apellido_materno) as nombre"),'users.name', 'users.apellido_paterno', 'users.apellido_materno',
-                'courses.nombre as curso', 'groups.nombre as grupo', 'inscriptions.calificacion', 'areas.nombre as area','periods.fecha_inicio as fi', 'periods.fecha_fin as ff','courses.duracion as duracion']);
+                'courses.nombre as curso', 'groups.nombre as grupo', 'inscriptions.calificacion', 'areas.nombre as area','periods.fecha_inicio as fi', 'periods.fecha_fin as ff','courses.duracion as duracion'])
+            ->orderBy($this->sortField, $this->sortDirection);
     }
 
     private function getDates(?User $datos): array

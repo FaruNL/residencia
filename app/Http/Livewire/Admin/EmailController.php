@@ -128,10 +128,19 @@ class EmailController extends Component
         $this->validateOnly($propertyName);
     }
 
+    public function consulta(){
+        return User::where('users.estado','=','1')
+                ->whereRelation('roles', 'name', '=', 'Instructor')
+                ->whereRelation('roles', 'name', '=', 'Participante')->get();
+    }
+
     public function store()
     {
         $this->validate();
-        $users=User::all();
+        // $users=User::where('users.estado','=','1')
+        //         ->whereRelation('roles', 'name', '=', 'Instructor')
+        //         ->whereRelation('roles', 'name', '=', 'Participante')->get();
+        $users=$this->consulta();
         $iduser=Auth::id();
         $correo=Email::create($this->arr);
 

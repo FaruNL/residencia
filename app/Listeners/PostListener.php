@@ -36,37 +36,25 @@ class PostListener
         // $this->user = User::all()
 
         if($event->post->role == 'Participante')
-            $this->user=User::join('inscriptions as in', 'in.user_id', '=', 'users.id')
-            ->join('course_details','course_details.id', '=', 'in.course_detail_id')
-            ->join('periods','periods.id', '=','course_details.period_id' )
-            ->select('users.id')
-            ->where('in.estatus_participante','=','Participante')
-            ->where('periods.fecha_inicio', '<', $event->post->created_at->format('Y-m-d'))
-            ->where('periods.fecha_fin', '>', $event->post->created_at->format('Y-m-d'))->get()
+            $this->user=User::where('users.estado','=','1')
+            ->whereRelation('roles', 'name', '=', 'Participante')->get()
             ->except($event->post->user_id)
             ->each(function($user) use ($event){
                 Notification::send($user, new PostNotification($event->post));
             });
         elseif($event->post->role == 'Instructor')
-            $this->user=User::join('inscriptions as in', 'in.user_id', '=', 'users.id')
-            ->join('course_details','course_details.id', '=', 'in.course_detail_id')
-            ->join('periods','periods.id', '=','course_details.period_id' )
-            ->select('users.id')
-            ->where('in.estatus_participante','=','Instructor')
-            ->where('periods.fecha_inicio', '<', $event->post->created_at->format('Y-m-d'))
-            ->where('periods.fecha_fin', '>', $event->post->created_at->format('Y-m-d'))->get()
+            $this->user=User::where('users.estado','=','1')
+            ->whereRelation('roles', 'name', '=', 'Instructor')->get()
             ->except($event->post->user_id)
             ->each(function($user) use ($event){
                 Notification::send($user, new PostNotification($event->post));
             });
         elseif($event->post->role == 'Todos')
-            $this->user=User::join('inscriptions as in', 'in.user_id', '=', 'users.id')
-            ->join('course_details','course_details.id', '=', 'in.course_detail_id')
-            ->join('periods','periods.id', '=','course_details.period_id' )
-            ->select('users.id')
-            ->where('periods.fecha_inicio', '<', $event->post->created_at->format('Y-m-d'))
-            ->where('periods.fecha_fin', '>', $event->post->created_at->format('Y-m-d'))->get()
+            $this->user=User::where('users.estado','=','1')
+            ->whereRelation('roles', 'name', '=', 'Instructor')
+            ->whereRelation('roles', 'name', '=', 'Participante')->get()
             ->except($event->post->user_id)
+            // ->except('roles', 'name', '=', 'Coordinador')
             ->each(function($user) use ($event){
                 Notification::send($user, new PostNotification($event->post));
             });
