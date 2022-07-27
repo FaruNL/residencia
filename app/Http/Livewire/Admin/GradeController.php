@@ -118,7 +118,7 @@ class GradeController extends Component
 
     public function consultar_cursos(){
         // $user = User::find(auth()->user()->id);
-        $fecha_actual = date("Y-m-d");
+        // $fecha_actual = date("Y-m-d");
         // $this->id_user=$user->id;
         $this->obtener_usuario();
         return CourseDetail::join('inscriptions','inscriptions.course_detail_id','course_details.id')
@@ -185,7 +185,9 @@ class GradeController extends Component
             $this->curso=$cur[0]->nombre;
             $this->id_course=$cur[0]->id;
         }
-        ($this->aux_fecha!=null) ? $this->validar_limite() : $this->disponible=false;
+        // dd($this->disponible);
+        // ($this->aux_fecha!=null) ? $this->validar_limite() : $this->disponible=false;
+        $this->validar_limite();
         return view('livewire.admin.grades.index', [
             'grades' => User::join('inscriptions', 'inscriptions.user_id', '=', 'users.id')
             ->join('course_details', 'course_details.id', 'inscriptions.course_detail_id')
@@ -210,11 +212,11 @@ class GradeController extends Component
             'courses' => $this->consultar_cursos(),
             'groups' => $this->consultar_grupos()
         ]);
+
     }
 
     public function descarga(){
         $data=$this->participants();
-
         return Excel::download(new ListExport($data), 'Lista_Asistencia.xlsx');
     }
 
@@ -226,7 +228,7 @@ class GradeController extends Component
     public function participants(){
         return User::join('inscriptions', 'inscriptions.user_id', '=', 'users.id')
         ->join('course_details', 'course_details.id', 'inscriptions.course_detail_id')
-        ->join('courses', 'courses.i d', '=', 'course_details.course_id')
+        ->join('courses', 'courses.id', '=', 'course_details.course_id')
         ->join('groups', 'groups.id', '=', 'course_details.group_id')
         ->join('areas', 'areas.id', '=', 'users.area_id')
         ->join('periods', 'periods.id', '=', 'course_details.period_id')

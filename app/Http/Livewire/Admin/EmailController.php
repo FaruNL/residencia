@@ -133,10 +133,12 @@ class EmailController extends Component
     public function consulta($destinatario)
     {
         if ($destinatario == 'Participante' || $destinatario == 'Instructor') {
-            $user = User::whereRelation('roles', 'name', '=', $destinatario)->get();
+            $user = User::where('users.estado', '=', '1')
+            ->whereRelation('roles', 'name', '=', $destinatario)->get();
         }
         if ($destinatario == 'Todos') {
-            $user = User::whereHas('roles', function ($query) {
+            $user = User::where('users.estado', '=', '1')
+            ->whereHas('roles', function ($query) {
                 $query->where('name', '=', 'Instructor')->orWhere('name', '=', 'Participante');
             })->get();
         }

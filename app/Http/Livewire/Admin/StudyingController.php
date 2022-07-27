@@ -79,7 +79,7 @@ class StudyingController extends Component
             ->where("users.id", $iduser)
             ->where('course_details.id', $idcurso)
             ->where("inscriptions.estatus_participante", $this->estatus)
-            ->get();;
+            ->get();
     }
 
     public function consulta_ins($idcurso)
@@ -90,7 +90,7 @@ class StudyingController extends Component
             ->select('users.id as iduser', DB::raw("concat(users.name,' ',users.apellido_paterno,' ', users.apellido_materno) as nombre"))
             ->where('course_details.id', $idcurso)
             ->where("inscriptions.estatus_participante", 'Instructor')
-            ->get();;
+            ->get();
     }
 
     public function download_pdf($iduser,$idcurso){

@@ -107,7 +107,7 @@ class ConstanciaInstructorController extends Component
         $i=1;
         $numlist='';
         $num=0;
-        $aux=$this->consultaBase()
+        $aux=$this->consulta_base()
                  ->orderBy('app', 'asc')->get();
 
         foreach($aux as $a){
@@ -128,7 +128,7 @@ class ConstanciaInstructorController extends Component
     public function descargar_constancia($id)
     {
         $numlista=$this->obtenernumlist($id);
-        $datos = $this->consultaBase()
+        $datos = $this->consulta_base()
             ->where('users.id', '=', $id)
             ->get()->first();
         list($fecha_inicial, $fecha_final, $dia_actual) = $this->get_dates($datos);
@@ -147,7 +147,7 @@ class ConstanciaInstructorController extends Component
         \Storage::makeDirectory('pdf');
 
         foreach ($consulta as $item) {
-            list($fecha_inicial, $fecha_final, $dia_actual) = $this->getDates($item);
+            list($fecha_inicial, $fecha_final, $dia_actual) = $this->get_dates($item);
             $numlista=$this->obtenernumlist($item->iduser);
 
             $pdf = Pdf::loadView('livewire.admin.constancias.download_instructor', ['datos' => $item,'fi'=> $fecha_inicial,'ff'=> $fecha_final,'day'=> $dia_actual, 'numlist'=> $numlista]);

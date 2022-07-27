@@ -127,6 +127,7 @@
 
                     @endif
                 </div>
+
                 @if($is_open)
                     @include('livewire.admin.grades.edit')
                 @endif
