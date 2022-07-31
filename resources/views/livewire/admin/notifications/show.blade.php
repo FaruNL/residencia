@@ -1,6 +1,6 @@
 <x-jet-dialog-modal wire:ignore.self wire:model.defer="show_view_modal">
     <x-slot name="title">
-        <strong>Notificación {{$title}} enviada.</strong>
+        <strong>Notificación enviada.</strong>
     </x-slot>
     <x-slot name="content">
         {{-- <form  id="courseForm"> --}}
